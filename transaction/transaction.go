@@ -22,6 +22,6 @@ type Transaction interface {
 // NewTransaction represents data fed into the system with the aim of creating a new transaction entity.
 type NewTransaction interface {
 	GetPurchasedProducts() []PurchasedProduct //Returns information on all product purchases involved in the transaction
-	GetRegistrationNumber() //Returns the registration number provided by the student to authorize the transaction
-	GetPinCode() //Returns the pin code provided by the student to authorize the transaction
+	GetRegistrationNumber() string//Returns the registration number provided by the student to authorize the transaction
+	GetPinCode() string//Returns the pin code provided by the student to authorize the transaction
 }
