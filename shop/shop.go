@@ -16,7 +16,7 @@ type Shop interface {
 }
 
 // NewShop represents data fed into the system with the aim of creating a new shop entity.
-type NewSchool interface {
+type NewShop interface {
 	GetName() string        // Returns the name of the  new shop
 	GetPhoneNumber() string // Returns the phone number of the new shop
 	GetPassword() string    // Returns the security password of the new shop
