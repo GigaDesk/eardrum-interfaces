@@ -13,6 +13,7 @@ type User interface {
 	GetPassword() string     // Returns the security password of the user
 	GetAccountBalanceInCents() int64 // Returns the user's account balance in cents as an integer.
 	GetPinCode() string // Returns the user's security pin code
+	GetMpesaNumber() string  // Returns the mpesa number of the user i.e used for withdrawals
 }
 
 // NewUser represents data fed into the system with the aim of creating a new user entity.
@@ -20,4 +21,5 @@ type NewUser interface {
 	GetName() string         // Returns the name of the user
 	GetPhoneNumber() string  // Returns the phone number of the user
 	GetPassword() string     // Returns the security password of the user
+	GetMpesaNumber() string  // Returns the mpesa number of the user i.e used for withdrawals
 }

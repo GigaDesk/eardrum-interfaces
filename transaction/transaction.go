@@ -11,6 +11,8 @@ type PurchasedProduct interface {
 // Transaction represents a transaction entity with its properties.
 type Transaction interface {
 	GetID() int64            // Returns the unique identifier of the transaction
+	GetUserID() int64        // Returns the unique identifier of the user that made the transaction
+	GetShopID() int64        // Returns the unique identifier of the shop that the transaction was made to
 	GetCreatedAt() time.Time // Returns the creation timestamp of the transaction
 	GetUpdatedAt() time.Time // Returns the last update timestamp of the transaction
 	GetDeletedAt() time.Time // Returns the deletion timestamp if the transaction is currently deleted or 0001-01-01 00:00:00 +0000 UTC if it is not
@@ -24,3 +26,4 @@ type NewTransaction interface {
 	GetPhoneNumber() string //Returns the phone number provided by the user to authorize the transaction
 	GetPinCode() string //Returns the pin code provided by the user to authorize the transaction
 }
+

@@ -13,6 +13,7 @@ type Shop interface {
 	GetPassword() string     // Returns the security password of the shop
 	GetAccountBalanceInCents() int64 // Returns the shop's account balance in cents as an integer.
 	GetPinCode() string // Returns the shop's security pin code
+	GetMpesaNumber() string  // Returns the mpesa number of the shop i.e used for withdrawals
 }
 
 // NewShop represents data fed into the system with the aim of creating a new shop entity.
@@ -20,4 +21,5 @@ type NewShop interface {
 	GetName() string        // Returns the name of the  new shop
 	GetPhoneNumber() string // Returns the phone number of the new shop
 	GetPassword() string    // Returns the security password of the new shop
+	GetMpesaNumber() string  // Returns the mpesa number of the shop i.e used for withdrawals
 }
