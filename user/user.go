@@ -21,4 +21,5 @@ type NewUser interface {
 	GetName() string         // Returns the name of the user
 	GetPhoneNumber() string  // Returns the phone number of the user
 	GetPassword() string     // Returns the security password of the user
+	GetMpesaNumber() string  // Returns the mpesa number of the user i.e used for withdrawals
 }
