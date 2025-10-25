@@ -5,7 +5,7 @@ import "time"
 // Product represents a product entity with its properties.
 type Product interface {
 	GetID() int64                  // Returns the unique identifier of the product
-	GetShopID() int64              // Returns the unique identifier of the shop that the product belongs to
+	GetMerchantID() int64          // Returns the unique identifier of the merchant that the product belongs to
 	GetCategoryID() *int64         // Returns a pointer to the unique identifier of the category that the product belongs to
 	GetCreatedAt() time.Time       // Returns the creation timestamp of the product
 	GetUpdatedAt() time.Time       // Returns the last update timestamp of the product
@@ -25,7 +25,7 @@ type NewProduct interface {
 // Category represents a group of product entities with its properties.
 type Category interface {
 	GetID() int64            // Returns the unique identifier of the category
-	GetShopID() int64        // Returns the unique identifier of the shop that the category belongs to
+	GetMerchantID() int64    // Returns the unique identifier of the merchant that the category belongs to
 	GetCreatedAt() time.Time // Returns the creation timestamp of the category
 	GetUpdatedAt() time.Time // Returns the last update timestamp of the category
 	GetDeletedAt() time.Time // Returns the deletion timestamp if the category is currently deleted or 0001-01-01 00:00:00 +0000 UTC if it is not
