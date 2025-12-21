@@ -2,8 +2,6 @@ package transaction
 
 import (
 	"time"
-
-	"github.com/google/uuid"
 )
 
 // PurchasedProduct represents the essential details of a product bought as part of a transaction.
@@ -27,7 +25,7 @@ type Transaction interface {
 // TransactionAuthorization provides the data required for a user to authorize a transaction.
 // It is intended for embedding in more specific transaction types to avoid code duplication.
 type TransactionAuthorization interface {
-	GetUUID() uuid.UUID // GetUUID returns the unique UUID provided by the user to authorize the transaction.
+	GetUUID() string // GetUUID returns the unique UUID string provided by the user to authorize the transaction.
 	GetPinCode() string // GetPinCode returns the security PIN code provided by the user for authorization.
 }
 
