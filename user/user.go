@@ -13,7 +13,6 @@ type User interface {
 	GetPassword() string     // Returns the security password of the user
 	GetAccountBalanceInCents() int64 // Returns the user's account balance in cents as an integer.
 	GetPinCode() *string // Returns the user's security pin code
-	GetMpesaNumber() *string  // Returns the mpesa number of the user i.e used for withdrawals
 	GetQrCodeBase64() string //Returns Base64 string encoding of QR code image
 	GetFacialEmbeddings() *[]string //Returns a list of the user's facial embeddings
 	GetFacialImages() *[]string //Returns a list of Base64 string encodings of the user's facial images
@@ -25,5 +24,4 @@ type NewUser interface {
 	GetUserName() string     // Returns the username of the user
 	GetPhoneNumber() string  // Returns the phone number of the user
 	GetPassword() string     // Returns the security password of the user
-	GetMpesaNumber() *string // Returns the mpesa number of the user i.e used for withdrawals
 }
