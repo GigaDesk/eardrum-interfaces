@@ -22,7 +22,7 @@ type Transaction interface {
 // It is intended for embedding in more specific transaction types to avoid code duplication.
 type TransactionAuthorization interface {
 	GetUUID() string // GetUUID returns the unique UUID string provided by the user to authorize the transaction.
-	GetPinCode() string // GetPinCode returns the security PIN code provided by the user for authorization.
+	GetFacialEmbedding() string // GetFacialEmbedding returns the FacialEmbedding provided by the user for authorization.
 }
 
 // NewTransaction represents a new transaction with a single total amount, not tied to specific products.
