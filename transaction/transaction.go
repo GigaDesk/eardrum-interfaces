@@ -9,8 +9,8 @@ import (
 // Transaction represents the core properties of a financial transaction.
 type Transaction interface {
 	GetID() int64 // GetID returns the unique identifier of the transaction.
-	GetUserID() int64 // GetUserID returns the unique identifier of the user who made the transaction.
-	GetMerchantID() int64 // GetMerchantID returns the unique identifier of the merchant where the transaction occurred.
+	GetUserName() string // GetUserName returns the unique username of the user who made the transaction.
+	GetMerchantName() string // GetMerchantName returns the unique username of the merchant where the transaction occurred.
 	GetCreatedAt() time.Time // GetCreatedAt returns the creation timestamp of the transaction.
 	GetUpdatedAt() time.Time // GetUpdatedAt returns the last update timestamp of the transaction.
 	GetDeletedAt() time.Time // GetDeletedAt returns the deletion timestamp. The timestamp is a zero value if the transaction has not been deleted.
