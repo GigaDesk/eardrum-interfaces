@@ -33,3 +33,10 @@ type NewTransaction interface {
 }
 
 
+// NewOfflineTransaction represents a transaction initiated offline.
+// It inherits authorization and amount details from NewTransaction, adding specific offline metadata.
+type NewOfflineTransaction interface {
+	NewTransaction
+	GetPhoneNumber() string       // GetPhoneNumber returns the phone number associated with the offline transaction.
+	GetOfflineTimestamp() time.Time // GetOfflineTimestamp returns the actual time the transaction occurred offline.
+}
