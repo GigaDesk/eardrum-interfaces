@@ -6,28 +6,62 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
-// SystemCode represents our custom Eardrum error code format (e.g., EAR-001)
 type SystemCode string
 
-// Define your Oracle-style system error codes here
 const (
-	EARInternalError    SystemCode = "EAR-001"
-	EARInvalidInput     SystemCode = "EAR-002"
-	EARUserNotFound     SystemCode = "EAR-003"
-	EARDuplicateUser    SystemCode = "EAR-004"
-	EARUnauthenticated  SystemCode = "EAR-005"
-	EARPermissionDenied SystemCode = "EAR-006"
-	EARFileNotFound     SystemCode = "EAR-007"
+	EARInternalError     SystemCode = "EAR-001"
+	EARInvalidInput      SystemCode = "EAR-002"
+	EARUserNotFound      SystemCode = "EAR-003" // Legacy / Generic
+	EARDuplicateUser     SystemCode = "EAR-004" // Legacy / Generic
+	EARUnauthenticated   SystemCode = "EAR-005"
+	EARPermissionDenied  SystemCode = "EAR-006"
+	EARFileNotFound      SystemCode = "EAR-007"
+
+	// ==========================================
+	// MERCHANT SPECIFIC ERRORS (EAR-008 to EAR-019)
+	// ==========================================
+	EARMerchantInvalidInput             SystemCode = "EAR-008"
+	EARMerchantNotFoundByPhone          SystemCode = "EAR-009"
+	EARMerchantNotFoundByUsername       SystemCode = "EAR-010"
+	EARMerchantPhoneExistsVerified      SystemCode = "EAR-011"
+	EARMerchantPhoneExistsUnverified    SystemCode = "EAR-012"
+	EARMerchantUsernameExistsVerified   SystemCode = "EAR-013"
+	EARMerchantUsernameExistsUnverified  SystemCode = "EAR-014"
+	EARMerchantUnauthenticated          SystemCode = "EAR-015"
+	EARMerchantPermissionDenied         SystemCode = "EAR-016"
+	EARMerchantLookupFailedByPhone      SystemCode = "EAR-017"
+	EARMerchantLookupFailedByUsername   SystemCode = "EAR-018"
+	EARMerchantListRetrievalFailed      SystemCode = "EAR-019"
+
+	// ==========================================
+	// USER SPECIFIC ERRORS (EAR-020 onwards)
+	// ==========================================
+	EARUserInvalidInput                 SystemCode = "EAR-020"
+	
+	// Specific User Not Found Scenarios
+	EARUserNotFoundByPhone              SystemCode = "EAR-021"
+	EARUserNotFoundByUsername           SystemCode = "EAR-022"
+	
+	// Specific User Conflict Scenarios
+	EARUserPhoneExistsVerified          SystemCode = "EAR-023"
+	EARUserPhoneExistsUnverified        SystemCode = "EAR-024"
+	EARUserUsernameExistsVerified       SystemCode = "EAR-025"
+	EARUserUsernameExistsUnverified     SystemCode = "EAR-026"
+	
+	EARUserUnauthenticated              SystemCode = "EAR-027"
+	EARUserPermissionDenied             SystemCode = "EAR-028"
+
+	// User Database Lookup Failures (HTTP 500)
+	EARUserLookupFailedByPhone          SystemCode = "EAR-029"
+	EARUserLookupFailedByUsername       SystemCode = "EAR-030"
+	EARUserListRetrievalFailed          SystemCode = "EAR-031"
 )
 
-// errorDefinition binds our internal system code to its default metadata
 type errorDefinition struct {
 	HttpStatus int
 	Message    string
 }
 
-// The global registry mapping your EAR codes to default HTTP statuses and messages.
-// This serves as your single source of truth for error metadata.
 var registry = map[SystemCode]errorDefinition{
 	EARInternalError: {
 		HttpStatus: http.StatusInternalServerError,
@@ -57,17 +91,120 @@ var registry = map[SystemCode]errorDefinition{
 		HttpStatus: http.StatusNotFound,
 		Message:    "The requested file or asset could not be found.",
 	},
+
+	// ------------------------------------------
+	// Merchant Registrations
+	// ------------------------------------------
+	EARMerchantInvalidInput: {
+		HttpStatus: http.StatusBadRequest,
+		Message:    "The provided merchant registration or input details are invalid.",
+	},
+	EARMerchantNotFoundByPhone: {
+		HttpStatus: http.StatusNotFound,
+		Message:    "No merchant account matches the provided phone number.",
+	},
+	EARMerchantNotFoundByUsername: {
+		HttpStatus: http.StatusNotFound,
+		Message:    "No merchant account matches the provided username.",
+	},
+	EARMerchantPhoneExistsVerified: {
+		HttpStatus: http.StatusConflict,
+		Message:    "This phone number is already registered to a verified merchant account.",
+	},
+	EARMerchantPhoneExistsUnverified: {
+		HttpStatus: http.StatusConflict,
+		Message:    "This phone number belongs to an unverified merchant. Please complete your verification process.",
+	},
+	EARMerchantUsernameExistsVerified: {
+		HttpStatus: http.StatusConflict,
+		Message:    "This username is already taken by a verified merchant.",
+	},
+	EARMerchantUsernameExistsUnverified: {
+		HttpStatus: http.StatusConflict,
+		Message:    "This username is reserved by an unverified merchant profile.",
+	},
+	EARMerchantUnauthenticated: {
+		HttpStatus: http.StatusUnauthorized,
+		Message:    "Merchant authentication failed or credentials are missing.",
+	},
+	EARMerchantPermissionDenied: {
+		HttpStatus: http.StatusForbidden,
+		Message:    "This merchant account does not have permission to access this resource.",
+	},
+	EARMerchantLookupFailedByPhone: {
+		HttpStatus: http.StatusInternalServerError,
+		Message:    "The system encountered an error while scanning for the merchant phone number.",
+	},
+	EARMerchantLookupFailedByUsername: {
+		HttpStatus: http.StatusInternalServerError,
+		Message:    "The system encountered an error while scanning for the merchant username.",
+	},
+	EARMerchantListRetrievalFailed: {
+		HttpStatus: http.StatusInternalServerError,
+		Message:    "The system encountered an error while attempting to compile the merchant list.",
+	},
+
+	// ------------------------------------------
+	// User Registrations
+	// ------------------------------------------
+	EARUserInvalidInput: {
+		HttpStatus: http.StatusBadRequest,
+		Message:    "The provided user input or profile details are invalid.",
+	},
+	EARUserNotFoundByPhone: {
+		HttpStatus: http.StatusNotFound,
+		Message:    "No user account matches the provided phone number.",
+	},
+	EARUserNotFoundByUsername: {
+		HttpStatus: http.StatusNotFound,
+		Message:    "No user account matches the provided username.",
+	},
+	EARUserPhoneExistsVerified: {
+		HttpStatus: http.StatusConflict,
+		Message:    "This phone number is already registered to a verified user account.",
+	},
+	EARUserPhoneExistsUnverified: {
+		HttpStatus: http.StatusConflict,
+		Message:    "This phone number belongs to an unverified user. Please complete your verification process.",
+	},
+	EARUserUsernameExistsVerified: {
+		HttpStatus: http.StatusConflict,
+		Message:    "This username is already taken by a verified user.",
+	},
+	EARUserUsernameExistsUnverified: {
+		HttpStatus: http.StatusConflict,
+		Message:    "This username is reserved by an unverified user profile.",
+	},
+	EARUserUnauthenticated: {
+		HttpStatus: http.StatusUnauthorized,
+		Message:    "User authentication failed or credentials are missing.",
+	},
+	EARUserPermissionDenied: {
+		HttpStatus: http.StatusForbidden,
+		Message:    "This user account does not have permission to access this resource.",
+	},
+	EARUserLookupFailedByPhone: {
+		HttpStatus: http.StatusInternalServerError,
+		Message:    "The system encountered an error while scanning for the user phone number.",
+	},
+	EARUserLookupFailedByUsername: {
+		HttpStatus: http.StatusInternalServerError,
+		Message:    "The system encountered an error while scanning for the user username.",
+	},
+	EARUserListRetrievalFailed: {
+		HttpStatus: http.StatusInternalServerError,
+		Message:    "The system encountered an error while attempting to compile the user list.",
+	},
 }
 
 // PublicError holds the structured details sent back to clients/GraphQL.
 type PublicError struct {
-	SystemCode SystemCode `json:"code"`        // e.g., "EAR-004"
-	HttpStatus int        `json:"http_status"` // e.g., 409
-	Message    string     `json:"message"`     // Centralized client-safe message
-	Err        error      `json:"-"`           // Hidden internal debugging error (excluded from JSON)
+	SystemCode SystemCode `json:"code"`        
+	HttpStatus int        `json:"http_status"` 
+	Message    string     `json:"message"`     
+	Err        error      `json:"-"`           
 }
 
-// Implement the Go error interface
 func (e *PublicError) Error() string {
 	if e.Err != nil {
 		return fmt.Sprintf("[%s] (HTTP %d) %s (wrapped: %s)", e.SystemCode, e.HttpStatus, e.Message, e.Err.Error())
@@ -75,15 +212,11 @@ func (e *PublicError) Error() string {
 	return fmt.Sprintf("[%s] (HTTP %d) %s", e.SystemCode, e.HttpStatus, e.Message)
 }
 
-// Implement the Unwrap method for errors.Is/As to work correctly
 func (e *PublicError) Unwrap() error {
 	return e.Err
 }
 
-// New creates a PublicError by automatically looking up the code in our registry.
-// You no longer need to explicitly pass messages or HTTP statuses here.
 func New(code SystemCode, err error) *PublicError {
-	// Fallback in case an undefined code is passed during development
 	defn, exists := registry[code]
 	if !exists {
 		defn = registry[EARInternalError]
@@ -98,19 +231,14 @@ func New(code SystemCode, err error) *PublicError {
 	}
 }
 
-
-
-// Log outputs the error cleanly to your server console using zerolog
 func (e *PublicError) Log() {
 	if e.HttpStatus >= 500 {
-		// Severe server crash: log as an Error and include the raw engineering error
 		log.Error().
 			Str("code", string(e.SystemCode)).
 			Int("status", e.HttpStatus).
 			Err(e.Err).
 			Msg(e.Message)
 	} else {
-		// Client/User mistake (400, 401, etc.): log as a Warn and skip raw system logs
 		log.Warn().
 			Str("code", string(e.SystemCode)).
 			Int("status", e.HttpStatus).
