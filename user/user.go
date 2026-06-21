@@ -15,7 +15,7 @@ type User interface {
 	GetQrCodeBase64() string //Returns Base64 string encoding of QR code image
 	GetFacialEmbeddings() *[]string //Returns a list of the user's facial embeddings
 	GetFacialImages() *[]string //Returns a list of Base64 string encodings of the user's facial images
-	GetPassport() string //Returns Base64 string encoding of the user's passport image
+	GetPassport() *string //Returns Base64 string encoding of the user's passport image
 }
 
 // NewUser represents data fed into the system with the aim of creating a new user entity.
