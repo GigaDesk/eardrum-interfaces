@@ -16,6 +16,7 @@ type User interface {
 	GetFacialEmbeddings() *[]string //Returns a list of the user's facial embeddings
 	GetFacialImages() *[]string //Returns a list of Base64 string encodings of the user's facial images
 	GetPassport() *string //Returns Base64 string encoding of the user's passport image
+	MatchFace(incomingB64 string, threshold float32) bool //MatchFace takes an incoming base64 embedding and matches it against the user's saved embeddings.
 }
 
 // NewUser represents data fed into the system with the aim of creating a new user entity.
