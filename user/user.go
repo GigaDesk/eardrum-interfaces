@@ -14,8 +14,8 @@ type User interface {
 	GetPinCode() *string // Returns the user's security pin code
 	GetQrCodeBase64() string //Returns Base64 string encoding of QR code image
 	GetFacialEmbeddings() *[]string //Returns a list of the user's facial embeddings
-	GetFacialImages() *[]string //Returns a list of Base64 string encodings of the user's facial images
-	GetPassport() *string //Returns Base64 string encoding of the user's passport image
+	GetFacialImages() *[]string //Returns a list of urls of the user's facial images
+	GetPassport() *string //Returns url of the user's passport image
 	MatchFace(incomingB64 string, threshold float32) bool //MatchFace takes an incoming base64 embedding and matches it against the user's saved embeddings.
 }
 
