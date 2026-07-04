@@ -64,6 +64,43 @@ const (
     EARTxInsufficientBalance            SystemCode = "EAR-034"
     EARTxAmountMustBeGreaterThanZero    SystemCode = "EAR-035"
     EARTxInvalidAuthentication          SystemCode = "EAR-036"
+
+    // ==========================================
+    // VALIDATION & EMBEDDING SPECIFIC ERRORS (EAR-037 onwards)
+    // ==========================================
+    EAREmbeddingInvalidBase64        SystemCode = "EAR-037"
+    EAREmbeddingInvalidLength        SystemCode = "EAR-038"
+    EAREmbeddingInvalidFloatData     SystemCode = "EAR-039"
+    EAREmbeddingNotNormalized        SystemCode = "EAR-040"
+    EARValidationInvalidPhone        SystemCode = "EAR-041"
+    EARValidationInvalidId           SystemCode = "EAR-042"
+    EARValidationInvalidOtpLength    SystemCode = "EAR-043"
+    EARValidationInvalidName         SystemCode = "EAR-044"
+    EARValidationInvalidPassword     SystemCode = "EAR-045"
+    EARValidationInvalidDateFormat   SystemCode = "EAR-046"
+    EARValidationFutureDateNotAllowed SystemCode = "EAR-047"
+    // ==========================================
+    // OTP & SMS DELIVERY SPECIFIC ERRORS (EAR-048 onwards)
+    // ==========================================
+    EAROtpDeliveryFailed             SystemCode = "EAR-048"
+    EAROtpVerificationSystemError    SystemCode = "EAR-049"
+    EAROtpIncorrectCode              SystemCode = "EAR-050"
+    // ==========================================
+    // AUTHENTICATION CONTEXT SPECIFIC ERRORS (EAR-051 onwards)
+    // ==========================================
+    EARAuthTokenInvalid              SystemCode = "EAR-051"
+    EARAuthContextMissing            SystemCode = "EAR-052"
+    // ==========================================
+    // JWT LIFECYCLE SPECIFIC ERRORS (EAR-053 onwards)
+    // ==========================================
+    EARJwtSigningFailed              SystemCode = "EAR-053"
+    EARJwtParsingFailed              SystemCode = "EAR-054"
+    EARJwtConfigurationMissing       SystemCode = "EAR-055"
+    // ==========================================
+    // PASSWORD SPECIFIC ERRORS (EAR-056 onwards)
+    // ==========================================
+    EARAuthPasswordMismatch          SystemCode = "EAR-056"
+    EARAuthPasswordHashingFailed     SystemCode = "EAR-057"
 )
 
 type errorDefinition struct {
@@ -227,6 +264,108 @@ var registry = map[SystemCode]errorDefinition{
     EARTxInvalidAuthentication: {
         HttpStatus: http.StatusUnauthorized,
         Message:    "Transaction authentication failed or is invalid.",
+    },
+    // ------------------------------------------
+    // Validation & Embeddings
+    // ------------------------------------------
+    EAREmbeddingInvalidBase64: {
+        HttpStatus: http.StatusBadRequest,
+        Message:    "The provided face embedding is not a valid base64 encoded string.",
+    },
+    EAREmbeddingInvalidLength: {
+        HttpStatus: http.StatusBadRequest,
+        Message:    "The face embedding size is incorrect. It must be exactly 2048 bytes (512 float32 values).",
+    },
+    EAREmbeddingInvalidFloatData: {
+        HttpStatus: http.StatusBadRequest,
+        Message:    "The face embedding contains invalid data vectors (NaN or Infinity).",
+    },
+    EAREmbeddingNotNormalized: {
+        HttpStatus: http.StatusBadRequest,
+        Message:    "The face embedding structure is invalid because it is not L2 normalized.",
+    },
+    EARValidationInvalidPhone: {
+        HttpStatus: http.StatusBadRequest,
+        Message:    "The provided phone number format is invalid.",
+    },
+    EARValidationInvalidId: {
+        HttpStatus: http.StatusBadRequest,
+        Message:    "The provided identifier must be greater than zero.",
+    },
+    EARValidationInvalidOtpLength: {
+        HttpStatus: http.StatusBadRequest,
+        Message:    "The one-time password (OTP) must be exactly 6 digits.",
+    },
+    EARValidationInvalidName: {
+        HttpStatus: http.StatusBadRequest,
+        Message:    "The name field cannot be empty.",
+    },
+    EARValidationInvalidPassword: {
+        HttpStatus: http.StatusBadRequest,
+        Message:    "The password is too short. It must be at least 8 characters long.",
+    },
+    EARValidationInvalidDateFormat: {
+        HttpStatus: http.StatusBadRequest,
+        Message:    "The provided date format is invalid. Please use YYYY-MM-DD.",
+    },
+    EARValidationFutureDateNotAllowed: {
+        HttpStatus: http.StatusBadRequest,
+        Message:    "The date provided cannot be in the future.",
+    },
+    // ------------------------------------------
+    // OTP & SMS Lifecycle
+    // ------------------------------------------
+    EAROtpDeliveryFailed: {
+        HttpStatus: http.StatusInternalServerError,
+        Message:    "Failed to send the verification code. Please check the phone number format and try again.",
+    },
+    EAROtpVerificationSystemError: {
+        HttpStatus: http.StatusInternalServerError,
+        Message:    "The system encountered an error while validating the verification code.",
+    },
+    EAROtpIncorrectCode: {
+        HttpStatus: http.StatusBadRequest,
+        Message:    "The verification code entered is incorrect or has expired.",
+    },
+    // ------------------------------------------
+    // Authentication Context
+    // ------------------------------------------
+    EARAuthTokenInvalid: {
+        HttpStatus: http.StatusUnauthorized,
+        Message:    "The provided authentication token is invalid or expired.",
+    },
+    EARAuthContextMissing: {
+        HttpStatus: http.StatusInternalServerError,
+        Message:    "Authentication credentials could not be retrieved from the request context.",
+    },
+    // ------------------------------------------
+    // JWT Lifecycle
+    // ------------------------------------------
+    EARJwtSigningFailed: {
+        HttpStatus: http.StatusInternalServerError,
+        Message:    "The system encountered an error while signing the authentication token.",
+    },
+    EARJwtParsingFailed: {
+        HttpStatus: http.StatusUnauthorized,
+        Message:    "The provided authentication token is malformed, expired, or digitally invalid.",
+    },
+    EARJwtConfigurationMissing: {
+        HttpStatus: http.StatusInternalServerError,
+        Message:    "Critical server configuration is missing. Token cryptographic keys are uninitialized.",
+    },
+    // ------------------------------------------
+    // Password Verification
+    // ------------------------------------------
+    EARAuthPasswordMismatch: {
+        HttpStatus: http.StatusUnauthorized,
+        Message:    "The password provided does not match our records.",
+    },
+    // ------------------------------------------
+    // Password Encryption
+    // ------------------------------------------
+    EARAuthPasswordHashingFailed: {
+        HttpStatus: http.StatusInternalServerError,
+        Message:    "The system encountered an unexpected error while securing the password.",
     },
 }
 
