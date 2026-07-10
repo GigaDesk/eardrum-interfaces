@@ -11,8 +11,10 @@ type User interface {
 	GetPhoneNumber() string  // Returns the phone number of the user
 	GetPassword() string     // Returns the security password of the user
 	GetAccountBalanceInCents() int64 // Returns the user's account balance in cents as an integer.
+	GetOverdraftBalanceInCents() int64 //Returns user's overdraft balance in cents
+	GetUUID() string // Returns the user account unique identifier
 	GetPinCode() *string // Returns the user's security pin code
-	GetQrCodeBase64() string //Returns Base64 string encoding of QR code image
+	GetQrCodeBase64() string //Returns Base64 string encoding of QR code image of user UUID
 	GetFacialEmbeddings() *[]string //Returns a list of the user's facial embeddings
 	GetFacialImages() *[]string //Returns a list of urls of the user's facial images
 	GetPassport() *string //Returns url of the user's passport image
