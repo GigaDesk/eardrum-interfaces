@@ -41,4 +41,5 @@ type NewOfflineTransaction interface {
 	GetPhoneNumber() string       // GetPhoneNumber returns the phone number associated with the offline transaction.
 	GetOfflineTimestamp() time.Time // GetOfflineTimestamp returns the actual time the transaction occurred offline.
 	GetScanLog()string // GetScanLog fetches the image of the scan that authorized transaction
+	GetOfflineTransactionID() string //GetOfflineTransactionID returns the offline transaction id which includes the deviceIMEI and the Unix timestamp.
 }
