@@ -19,6 +19,8 @@ type User interface {
 	GetFacialImages() *[]string //Returns a list of urls of the user's facial images
 	GetPassport() *string //Returns url of the user's passport image
 	MatchFace(incomingB64 string, threshold float32) bool //MatchFace takes an incoming base64 embedding and matches it against the user's saved embeddings.
+	GetPinStatus() bool //Returns true if pin has been set, false if not.
+	GetFaceEnrollmentStatus() bool//Returns true if face has been enrolled, false if not.
 }
 
 // NewUser represents data fed into the system with the aim of creating a new user entity.
