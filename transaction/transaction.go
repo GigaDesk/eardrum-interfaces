@@ -16,7 +16,9 @@ type Transaction interface {
 	GetDeletedAt() time.Time // GetDeletedAt returns the deletion timestamp. The timestamp is a zero value if the transaction has not been deleted.
 	GetTotalAmountInCents() uint // GetTotalAmountInCents returns the total amount spent in the transaction, in cents.
 	GetTransactionCostInCents() uint // GetTransactionCostInCents returns the transaction processing cost in cents.
-	GetScanLog()string //GetScanLog fetches the image of the scan that authorized transaction
+	GetScanLog() string //GetScanLog fetches the image of the scan that authorized transaction
+	GetTransactionDeviceIMEI() string //GetTransactionDeviceIMEI returns the IMEI device ID of the device that processed the transaction 
+	GetTransactionDeviceModel() *string //GetTransactionDeviceModel returns the model of the device that processed the transaction
 }
 
 // TransactionAuthorization provides the data required for a user to authorize a transaction.
