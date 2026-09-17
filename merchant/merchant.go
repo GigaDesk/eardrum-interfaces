@@ -12,6 +12,7 @@ type Merchant interface {
 	GetPassword() string     // Returns the security password of the merchant
 	GetAccountBalanceInCents() int64 // Returns the merchant's account balance in cents as an integer.
 	GetPinCode() *string // Returns the merchant's security pin code
+	GetPinStatus() bool //Returns true if pin has been set, false if not.
 }
 
 // NewMerchant represents data fed into the system with the aim of creating a new merchant entity.
